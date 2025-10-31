@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Detecção</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="bi bi-motorcycle"></i> SmartLocation</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card p-4">
+            <h3 class="mb-3" th:text="${titulo}">Cadastro de Detecção</h3>
+
+            <form th:action="${deteccao.idDeteccao} != null ? @{/deteccoes/editar/{id}(id=${deteccao.idDeteccao})} : @{/deteccoes}" method="post" th:object="${deteccao}">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">ID da Moto</label>
+                        <input class="form-control" type="number" min="1" step="1" th:field="*{idMoto}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Posição X</label>
+                        <input class="form-control" type="number" step="0.01" th:field="*{posicaoX}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Posição Y</label>
+                        <input class="form-control" type="number" step="0.01" th:field="*{posicaoY}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Confiança (0 a 1)</label>
+                        <input class="form-control" type="number" step="0.01" min="0" max="1" th:field="*{confianca}">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label">Data/Hora (opcional)</label>
+                        <input class="form-control" type="datetime-local" th:value="${deteccao.horarioRegistro != null ? #temporals.format(deteccao.horarioRegistro, 'yyyy-MM-dd''T''HH:mm') : ''}" name="horarioRegistro">
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <a href="/deteccoes" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check2-circle"></i> Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

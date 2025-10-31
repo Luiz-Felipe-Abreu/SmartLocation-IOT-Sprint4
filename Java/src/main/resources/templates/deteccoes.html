@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLocation - Detecções</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="bi bi-motorcycle"></i> SmartLocation</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analise">Análise</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/motos">Motos <span id="motosBadge" class="badge ms-1" style="display:none;"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/deteccoes">Detecções</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Alertas -->
+        <div th:if="${sucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> <span th:text="${sucesso}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> <span th:text="${erro}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+    <h1 class="mb-4"><i class="bi bi-camera-video"></i> Histórico de Detecções</h1>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card p-4">
+                    <h4><i class="bi bi-list-check"></i> Todas as Detecções</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Visualize e gerencie as detecções</h5>
+                        <a class="btn btn-primary" href="/deteccoes/nova">
+                            <i class="bi bi-plus-circle"></i> Nova Detecção
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID Detecção</th>
+                                    <th>ID Moto</th>
+                                    <th>Posição X</th>
+                                    <th>Posição Y</th>
+                                    <th>Confiança</th>
+                                    <th>Data/Hora</th>
+                                    <th class="text-end">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="deteccao : ${deteccoes}">
+                                    <td th:text="${deteccao.idDeteccao}"></td>
+                                    <td th:text="${deteccao.idMoto ?: 'N/A'}"></td>
+                                    <td th:text="${deteccao.posicaoX != null ? #numbers.formatDecimal(deteccao.posicaoX, 1, 2) : 'N/A'}"></td>
+                                    <td th:text="${deteccao.posicaoY != null ? #numbers.formatDecimal(deteccao.posicaoY, 1, 2) : 'N/A'}"></td>
+                                    <td>
+                                        <span class="badge" 
+                                              th:classappend="${deteccao.confianca >= 0.8 ? 'bg-success' : (deteccao.confianca >= 0.5 ? 'bg-warning' : 'bg-danger')}"
+                                              th:text="${deteccao.confianca != null ? #numbers.formatPercent(deteccao.confianca, 1, 2) : 'N/A'}">
+                                        </span>
+                                    </td>
+                                    <td th:text="${deteccao.horarioRegistro != null ? #temporals.format(deteccao.horarioRegistro, 'dd/MM/yyyy HH:mm:ss') : 'N/A'}"></td>
+                                    <td class="text-end">
+                                        <div class="btn-group" role="group">
+                                            <a th:href="@{/deteccoes/editar/{id}(id=${deteccao.idDeteccao})}" class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-pencil-square"></i> Editar
+                                            </a>
+                                            <form method="post" th:action="@{/deteccoes/deletar/{id}(id=${deteccao.idDeteccao})}" 
+                                                  onsubmit="return confirm('Tem certeza que deseja deletar esta detecção?');">
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-trash"></i> Deletar
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(deteccoes)}">
+                                    <td colspan="7" class="text-center text-muted">Nenhuma detecção registrada</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/indicadores.js"></script>
+</body>
+</html>

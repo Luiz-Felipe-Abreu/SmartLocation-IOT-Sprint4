@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ocorreu um erro</title>
+  <link rel="stylesheet" href="/css/theme.css" />
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; padding: 0; background: #0f172a; color: #e2e8f0; }
+    .container { max-width: 960px; margin: 40px auto; padding: 24px; background: #111827; border-radius: 12px; border: 1px solid #1f2937; }
+    h1 { margin-top: 0; color: #93c5fd; }
+    .card { background: #0b1220; border: 1px solid #1f2937; border-radius: 10px; padding: 16px; margin-top: 16px; }
+    code, pre { background: #0b1220; color: #e5e7eb; padding: 8px 10px; border-radius: 6px; display: block; overflow-x: auto; }
+    a { color: #60a5fa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ocorreu um erro na aplicação</h1>
+    <p>Desculpe, algo deu errado ao processar sua solicitação. Se isso aconteceu logo após iniciar a aplicação, aguarde um momento e tente novamente.</p>
+
+    <div class="card">
+      <h3>Possível causa</h3>
+      <p>Conexões com o banco de dados podem ter atingido o limite (ORA-02391). As páginas continuarão funcionando parcialmente sem dados.</p>
+      <p>Você pode tentar:</p>
+      <ul>
+        <li>Atualizar esta página em 1-2 minutos</li>
+        <li>Parar a aplicação e iniciá-la novamente</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Suporte</h3>
+      <p>Se o problema persistir, verifique os logs da aplicação e as configurações de conexão no arquivo <code>application.properties</code>.</p>
+      <p>Voltar para a <a href="/">página inicial</a>.</p>
+    </div>
+  </div>
+</body>
+</html>
